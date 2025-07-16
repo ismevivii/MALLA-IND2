@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Malla Curricular Ingeniería Civil Industrial (IND)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eafaf1;
+            margin: 0;
+            padding: 24px;
+        }
+        h1 {
+            color: #218c5b;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .semestre {
+            background: #d4f7dc;
+            margin-bottom: 28px;
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .semestre-title {
+            font-size: 1.15em;
+            color: #218c5b;
+            margin-bottom: 10px;
+        }
+        .ramos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+        .ramo {
+            background: #b8eac7;
+            color: #234d2c;
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            min-width: 180px;
+            position: relative;
+            font-size: 1em;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+            transition: background 0.2s, color 0.2s, opacity 0.2s;
+            border: 2px solid #218c5b;
+            opacity: 1;
+        }
+        .ramo.bloqueado {
+            background: #d3d3d3;
+            color: #888;
+            border: 2px solid #bbb;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        .ramo.aprobado {
+            background: #34c759;
+            color: #fff;
+            border: 2px solid #218c5b;
+            text-decoration: line-through;
+        }
+        .ramo-info {
+            display: none;
+            position: absolute;
+            top: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fffbe6;
+            color: #234d2c;
+            border-radius: 8px;
+            padding: 10px 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+            z-index: 5;
+            min-width: 220px;
+            margin-top: 8px;
+            border: 1px solid #218c5b;
+        }
+        .ramo.active .ramo-info {
+            display: block;
+        }
+        @media (max-width: 700px) {
+            .ramos {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Malla Curricular Ingeniería Civil Industrial (IND)</h1>
+    <div id="malla"></div>
+    <script>
+        // Datos de la malla, editar aquí si quieres agregar/quitar ramos o prerrequisitos
+        const malla = [
+            {
+                semestre: 1,
+                ramos: [
+                    { nombre: "Álgebra", creditos: 8, codigo: "IND-111", prerrequisito: "" },
+                    { nombre: "Cálculo i", creditos: 8, codigo: "IND-112", prerrequisito: "" },
+                    { nombre: "Comunicación en ingeniería", creditos: 5, codigo: "IND-113", prerrequisito: "" },
+                    { nombre: "Introducción a la Ingeniería", creditos: 6, codigo: "IND-114", prerrequisito: "" },
+                    { nombre: "Inglés l", creditos: 3, codigo: "IFG-10028", prerrequisito: "" }
+                ]
+            },
+            {
+                semestre: 2,
+                ramos: [
+                    { nombre: "Álgebra Lineal", creditos: 8, codigo: "IND-121", prerrequisito: "Álgebra" },
+                    { nombre: "Cálculo ii", creditos: 8, codigo: "IND-122", prerrequisito: "Cálculo i" },
+                    { nombre: "Química", creditos: 5, codigo: "IND-123", prerrequisito: "" },
+                    { nombre: "Computación i", creditos: 6, codigo: "IND-124", prerrequisito: "" },
+                    { nombre: "Inglés li", creditos: 3, codigo: "IFG-20028", prerrequisito: "Inglés l" }
+                ]
+            },
+            {
+                semestre: 3,
+                ramos: [
+                    { nombre: "Inglés lii", creditos: 3, codigo: "IFG-3006", prerrequisito: "Inglés li" },
+                    { nombre: "Probabilidades y estadística", creditos: 5, codigo: "IND-213", prerrequisito: "Álgebra Lineal" },
+                    { nombre: "Cálculo iii", creditos: 8, codigo: "IND-211", prerrequisito: "Cálculo ii" },
+                    { nombre: "Física i", creditos: 8, codigo: "IND-212", prerrequisito: "Cálculo i" },
+                    { nombre: "Computación ii", creditos: 6, codigo: "IND-214", prerrequisito: "Computación i" }
+                ]
+            },
+            {
+                semestre: 4,
+                ramos: [
+                    { nombre: "Ecuaciones diferenciales", creditos: 8, codigo: "IND-221", prerrequisito: "Cálculo iii" },
+                    { nombre: "Análisis multivariado", creditos: 6, codigo: "IND-223", prerrequisito: "Probabilidades y estadística" },
+                    { nombre: "Módulo integrador Ciencias Básicas", creditos: 8, codigo: "IND-224", prerrequisito: "" },
+                    { nombre: "Física ii", creditos: 8, codigo: "IND-222", prerrequisito: "Física i" }
+                ]
+            },
+            {
+                semestre: 5,
+                ramos: [
+                    { nombre: "Termodinámica", creditos: 8, codigo: "IND-312", prerrequisito: "Física ii" },
+                    { nombre: "Introducción a la Fe", creditos: 5, codigo: "MFG-11428", prerrequisito: "" },
+                    { nombre: "Diseño industrial y dibujo técnico", creditos: 6, codigo: "IND-313", prerrequisito: "" },
+                    { nombre: "Modelamiento matemático y estocástico", creditos: 6, codigo: "IND-311", prerrequisito: "Análisis multivariado" },
+                    { nombre: "Administración y RRHH", creditos: 5, codigo: "IND-314", prerrequisito: "" }
+                ]
+            },
+            {
+                semestre: 6,
+                ramos: [
+                    { nombre: "Logística", creditos: 5, codigo: "IND-322", prerrequisito: "Modelamiento matemático y estocástico" },
+                    { nombre: "Electrónica industrial y automatización", creditos: 6, codigo: "IND-321", prerrequisito: "Diseño industrial y dibujo técnico" },
+                    { nombre: "Bases de datos", creditos: 4, codigo: "IND-325", prerrequisito: "Computación ii" },
+                    { nombre: "Economía", creditos: 5, codigo: "IND-323", prerrequisito: "Administración y RRHH" },
+                    { nombre: "Contabilidad y Finanzas", creditos: 5, codigo: "IND-324", prerrequisito: "" },
+                    { nombre: "Etica cristiana", creditos: 5, codigo: "MFG-21628", prerrequisito: "Introducción a la Fe" }
+                ]
+            },
+            {
+                semestre: 7,
+                ramos: [
+                    { nombre: "Emprendimiento y Creación de empresas", creditos: 6, codigo: "IND-414", prerrequisito: "" },
+                    { nombre: "Investigación de Operaciones", creditos: 6, codigo: "IND-411", prerrequisito: "Modelamiento matemático y estocástico" },
+                    { nombre: "Procesos industriales", creditos: 6, codigo: "IND-413", prerrequisito: "Diseño industrial y dibujo técnico" },
+                    { nombre: "Ingenieria economica", creditos: 6, codigo: "IND-413", prerrequisito: "Economía" },
+                    { nombre: "Metodologia de la investigación", creditos: 6, codigo: "IND-415", prerrequisito: "" }
+                ]
+            },
+            {
+                semestre: 8,
+                ramos: [
+                    { nombre: "Control de gestión", creditos: 4, codigo: "IND-422", prerrequisito: "Procesos industriales" },
+                    { nombre: "Módulo integrador Licenciatura (práctica)", creditos: 10, codigo: "IND-425", prerrequisito: "" },
+                    { nombre: "Gestión de operaciones", creditos: 4, codigo: "IND-421", prerrequisito: "Investigación de Operaciones" },
+                    { nombre: "Desarrollo personal y Liderazgo", creditos: 3, codigo: "IND-423", prerrequisito: "" },
+                    { nombre: "Creatividad y prototipaje de negocios", creditos: 4, codigo: "IND-424", prerrequisito: "" }
+                ]
+            },
+            {
+                semestre: 9,
+                ramos: [
+                    { nombre: "Optimización", creditos: 5, codigo: "IND-511", prerrequisito: "Gestión de operaciones" },
+                    { nombre: "Propiedad intelectual", creditos: 5, codigo: "IND-514", prerrequisito: "" },
+                    { nombre: "Formulación y evaluación de proyectos", creditos: 5, codigo: "IND-513", prerrequisito: "Ingenieria economica" },
+                    { nombre: "Gestion y analisis de informacion", creditos: 5, codigo: "IND-512", prerrequisito: "Control de gestión" },
+                    { nombre: "Marketing estratégico", creditos: 5, codigo: "IND-515", prerrequisito: "" }
+                ]
+            },
+            {
+                semestre: 10,
+                ramos: [
+                    { nombre: "Gestión de proyectos de i+d+i+e", creditos: 5, codigo: "IND-524", prerrequisito: "Propiedad intelectual" },
+                    { nombre: "planificación estrategica y gestion de negocios", creditos: 5, codigo: "IND-523", prerrequisito: "" },
+                    { nombre: "Inteligencia comp. y vig. tec.", creditos: 5, codigo: "IND-525", prerrequisito: "" },
+                    { nombre: "Gestión de calidad,producto y man.", creditos: 5, codigo: "IND-521", prerrequisito: "Procesos industriales" }
+                ]
+            }
+        ];
+
+        // Mapear todos los ramos con su id único y dependencias
+        let ramoDict = {}; // nombre -> {semestre, index}
+        malla.forEach((sem, sidx) => {
+            sem.ramos.forEach((r, ridx) => {
+                ramoDict[r.nombre] = { semestre: sidx, index: ridx };
+            });
+        });
+
+        // Estado de aprobación de cada ramo
+        let estado = {};
+        malla.forEach((sem, sidx) => {
+            sem.ramos.forEach((r, ridx) => {
+                estado[r.nombre] = {
+                    aprobado: false,
+                    bloqueado: r.prerrequisito ? true : false
+                };
+            });
+        });
+
+        // Actualiza bloqueos según los prerrequisitos
+        function actualizarBloqueos() {
+            malla.forEach((sem) => {
+                sem.ramos.forEach((r) => {
+                    if (!r.prerrequisito) {
+                        estado[r.nombre].bloqueado = false;
+                    } else {
+                        estado[r.nombre].bloqueado = !estado[r.prerrequisito]?.aprobado;
+                    }
+                });
+            });
+        }
+
+        // Renderizar la malla curricular
+        function renderMalla() {
+            const mallaDiv = document.getElementById('malla');
+            mallaDiv.innerHTML = '';
+            malla.forEach((sem, sidx) => {
+                const semestreDiv = document.createElement('div');
+                semestreDiv.className = 'semestre';
+                semestreDiv.innerHTML = `<div class="semestre-title">Semestre ${sem.semestre}</div>`;
+                const ramosDiv = document.createElement('div');
+                ramosDiv.className = 'ramos';
+
+                sem.ramos.forEach((ramo, ridx) => {
+                    const ramoDiv = document.createElement('div');
+                    ramoDiv.classList.add('ramo');
+                    if (estado[ramo.nombre].bloqueado) ramoDiv.classList.add('bloqueado');
+                    if (estado[ramo.nombre].aprobado) ramoDiv.classList.add('aprobado');
+                    ramoDiv.textContent = ramo.nombre;
+
+                    // Mostrar info extra al hacer hover/click
+                    const infoDiv = document.createElement('div');
+                    infoDiv.className = 'ramo-info';
+                    infoDiv.innerHTML = `
+                        <b>Código:</b> ${ramo.codigo}<br>
+                        <b>Créditos:</b> ${ramo.creditos}<br>
+                        <b>Prerrequisito:</b> ${ramo.prerrequisito ? ramo.prerrequisito : "Ninguno"}
+                    `;
+                    ramoDiv.appendChild(infoDiv);
+
+                    ramoDiv.onclick = (e) => {
+                        if (estado[ramo.nombre].bloqueado) return;
+                        estado[ramo.nombre].aprobado = !estado[ramo.nombre].aprobado;
+                        actualizarBloqueos();
+                        renderMalla();
+                    };
+
+                    ramoDiv.onmouseenter = () => ramoDiv.classList.add('active');
+                    ramoDiv.onmouseleave = () => ramoDiv.classList.remove('active');
+
+                    ramosDiv.appendChild(ramoDiv);
+                });
+
+                semestreDiv.appendChild(ramosDiv);
+                mallaDiv.appendChild(semestreDiv);
+            });
+        }
+
+        // Inicializar
+        actualizarBloqueos();
+        renderMalla();
+    </script>
+</body>
+</html>
