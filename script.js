@@ -1,5 +1,4 @@
 const cursos = [
-  const cursos = [
   { nombre: "Álgebra", codigo: "IND-111", creditos: 8, prerrequisitos: [], semestre: 1 },
   { nombre: "Cálculo i", codigo: "IND-112", creditos: 8, prerrequisitos: [], semestre: 1 },
   { nombre: "Comunicación en ingeniería", codigo: "IND-113", creditos: 5, prerrequisitos: [], semestre: 1 },
@@ -51,7 +50,6 @@ const cursos = [
   { nombre: "Gestión de calidad,producto y man.", codigo: "IND-521", creditos: 5, prerrequisitos: ["Procesos industriales"], semestre: 10 }
 ];
 
-];
 
 
 const cursoPorNombre = {};
