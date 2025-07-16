@@ -1,0 +1,44 @@
+body {
+  font-family: "Times New Roman", serif;
+  background-color: #f0fff0;
+  padding: 20px;
+  text-align: center;
+}
+
+h1 {
+  color: #2e7d32;
+}
+
+#contenedor-malla {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 30px;
+}
+
+.curso {
+  background-color: #e8f5e9;
+  border: 2px solid #388e3c;
+  border-radius: 10px;
+  padding: 10px;
+  width: 200px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.curso:hover {
+  background-color: #c8e6c9;
+}
+
+.curso.aprobado {
+  background-color: #a5d6a7 !important;
+  border-color: #2e7d32;
+  text-decoration: line-through;
+}
+
+.curso.bloqueado {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
